@@ -103,8 +103,8 @@ export default function Login () {
       </div>
 
       {/* Right side - Login form */}
-      <div className="flex-1 flex items-center justify-center p-8 ">
-        <div className="w-full h-full rounded-xl bg-background p-14">
+      <div className="flex-1 flex items-center justify-center p-6 ">
+        <div className="w-full h-full rounded-xl bg-background p-8">
           <div className="text-center mb-8">
             <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center mx-auto mb-4 lg:hidden">
               <Cross size={24} className="text-primary-foreground" />
