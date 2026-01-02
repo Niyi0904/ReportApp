@@ -41,11 +41,8 @@ export default function Home() {
       <div className="lg:w-1/2 flex items-center justify-center bg-primary-bg p-12">
         <div className="max-w-md text-center lg:text-left">
           <h2 className="text-3xl font-bold mb-4 text-gray-900">
-            Empower Your Ministry
+            Keep Track of Your Ministry
           </h2>
-          <p className="text-gray-700 mb-6">
-            Manage your discipleship program efficiently, track evangelism progress, and stay connected with your prayer groups. Everything you need to grow your ministry in one platform.
-          </p>
 
           {/* Info Cards */}
           <div className="grid grid-cols-1 gap-4 mb-8">
