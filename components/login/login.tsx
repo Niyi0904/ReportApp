@@ -12,6 +12,9 @@ import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/redux/store";
 import { loginUser } from "@/features/auth/loginUser";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "@/lib/firebase/auth";
+
 import { loginSuccess } from "@/app/redux/features/auth/authSlice";
 
 
@@ -40,32 +43,12 @@ export default function Login () {
     }
   }, [error]);
 
-  useEffect(() => {
-    if (user) {
-      toast.success("Login successful🎉. Redirecting to Dashboard");
-      router.push('/dashboard');
-    }
-  }, [user]);
-
-//   const handleSubmit = async (e: React.FormEvent) => {
-//     e.preventDefault();
-//     setIsLoading(true);
-    
-//     // Simulate login - replace with actual auth
-//     setTimeout(() => {
-//       setIsLoading(false);
-//       toast.success('Welcome back!');
-//       router.push('/dashboard');
-//     }, 1000);
-//   };
-
-
   const form = useForm({
     ...formOpt,
     onSubmit: (values) => {
         const email = values.value.email
         const password = values.value.password
-        loginUser({ email, password }, dispatch);
+        loginUser({ email, password }, dispatch, router);
       },
   });
 

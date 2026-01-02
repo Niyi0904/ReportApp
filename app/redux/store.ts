@@ -9,25 +9,25 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-// import storage from "redux-persist/lib/storage";
+import storage from "redux-persist/lib/storage";
 import authReducer from "./features/auth/authSlice";
 import onboardingReducer from "./features/onboarding/onboardingSlice"
 import tenantReducer from "./features/tenant/tenantSlice"
 import uiReducer from "./features/ui/uiSlice"
 
-// const authPersistConfig = {
-//   key: "auth",
-//   storage,
-// };
+const authPersistConfig = {
+  key: "auth",
+  storage,
+};
 
-// const persistedAuthReducer = persistReducer(
-//   authPersistConfig,
-//   authReducer
-// );
+const persistedAuthReducer = persistReducer(
+  authPersistConfig,
+  authReducer
+);
 
 export const store = configureStore({
   reducer: {
-    auth: authReducer, // persistedAuthReducer,
+    auth: persistedAuthReducer,
     onboarding: onboardingReducer,
     tenant: tenantReducer,
     ui: uiReducer
@@ -47,7 +47,7 @@ export const store = configureStore({
     }),
 });
 
-// export const persistor = persistStore(store);
+export const persistor = persistStore(store);
 
 // Types
 export type RootState = ReturnType<typeof store.getState>;

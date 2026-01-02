@@ -1,4 +1,6 @@
 "use client";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "@/app/redux/store";
 
 import {
   Heart,
@@ -16,6 +18,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import StatCard from "@/components/StatCard";
+import { useState } from "react";
 
 // ----------------------------------
 // MOCK DATA (replace with real API)
@@ -60,17 +63,31 @@ const recentSouls = [
 // PAGE
 // ----------------------------------
 export default function DashboardPage() {
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const user = useSelector((state: RootState) => state.auth.user);
+
+  const greeting = () => {
+    const hour = currentTime.getHours();
+    if (hour < 12) return 'Good morning';
+    if (hour < 18) return 'Good afternoon';
+    return 'Good evening';
+  };
+
   return (
-    <div className="min-h-screen bg-muted/40 p-8">
+    <div className="min-h-screen bg-muted/40 p-4">
+      <h1 className="text-2xl font-bold pb-2">Dashboard</h1>
       <div className="mx-auto max-w-7xl space-y-8">
 
         {/* Header */}
         <div className="rounded-xl bg-background border p-6">
-          <h1 className="text-2xl font-bold">Dashboard</h1>
+          <h1 className="text-2xl md:text-3xl font-bold">
+            {greeting()}, {user?.displayName}!
+          </h1>
           <p className="text-muted-foreground">
             Overview of your ministry activities and impact
           </p>
         </div>
+        
 
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
