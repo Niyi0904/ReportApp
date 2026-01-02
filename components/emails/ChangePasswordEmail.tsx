@@ -1,29 +1,40 @@
-// components/emails/OnboardEmail.tsx
+// components/emails/ChangePasswordEmail.tsx
 import React from 'react';
 import { Html, Head, Preview, Body, Container, Section, Text, Button } from '@react-email/components';
 
-export interface OnboardEmailProps {
+export interface ChangePasswordEmailProps {
+    email: string
   firstName: string;
-  email: string;
   resetLink: string;
 }
 
-export const OnboardEmail = ({ firstName, email, resetLink }: OnboardEmailProps) => (
+export const ChangePasswordEmail = ({ firstName, email, resetLink }: ChangePasswordEmailProps) => (
   <Html>
     <Head />
-    <Preview>Welcome to Discipleship Management System</Preview>
+    <Preview>Reset Your Password</Preview>
+
     <Body style={{ backgroundColor: '#F3E8E1', margin: 0, padding: 0, fontFamily: 'Arial, sans-serif' }}>
-      <Container style={{ backgroundColor: '#fff', borderRadius: '8px', padding: '24px', maxWidth: '600px', margin: '40px auto', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
+      <Container
+        style={{
+          backgroundColor: '#fff',
+          borderRadius: '8px',
+          padding: '24px',
+          maxWidth: '600px',
+          margin: '40px auto',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+        }}
+      >
         <Section>
           <Text style={{ fontSize: '20px', fontWeight: 'bold', color: '#7A4A2E', marginBottom: '12px' }}>
             Hello {firstName},
           </Text>
 
           <Text style={{ fontSize: '16px', color: '#333', lineHeight: '1.5', marginBottom: '24px' }}>
-            Welcome to our Discipleship Management System! Please set your password by clicking the button below to start your journey.
+            We received a request to reset your password. Click the button below to set a new password for your account.
           </Text>
 
           <Button
+            href={resetLink}
             style={{
               backgroundColor: '#7A4A2E',
               color: '#F3E8E1',
@@ -33,17 +44,16 @@ export const OnboardEmail = ({ firstName, email, resetLink }: OnboardEmailProps)
               fontWeight: 'bold',
               padding: '12px 24px',
             }}
-            href={resetLink}
           >
-            Set Your Password
+            Reset Password
           </Button>
 
           <Text style={{ fontSize: '14px', color: '#7A4A2E', marginTop: '32px' }}>
-            God bless your ministry!
+            If you didn’t request a password reset, you can safely ignore this email.
           </Text>
 
           <Text style={{ fontSize: '12px', color: '#999', marginTop: '16px' }}>
-            If you did not expect this email, you can safely ignore it.
+            This link will expire in a few hours for security purposes.
           </Text>
         </Section>
       </Container>

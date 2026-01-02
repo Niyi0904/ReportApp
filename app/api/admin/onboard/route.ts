@@ -1,7 +1,8 @@
 // app/api/onboard-user/route.ts
 import { NextResponse } from "next/server";
 import { adminAuth, adminDb } from "@/lib/firebase/admin";
-import { sendOnboardEmail } from "../../send-email/route"; // adjust path
+// import { sendOnboardEmail } from "../../send-email/route"; // adjust path
+import { sendOnboardEmail } from "@/components/emails/sendOnboardEmail";
 
 export async function POST(req: Request) {
   try {

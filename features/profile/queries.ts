@@ -12,7 +12,6 @@ export const useUserProfile = () =>
       }
 
       const data = await res.json();
-      console.log("USER PROFILE:", data);
       return data;
     },
   });

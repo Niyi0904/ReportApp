@@ -2,7 +2,8 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { adminAuth } from "@/lib/firebase/admin";
-import { sendOnboardEmail } from "../../send-email/route";
+// import { sendOnboardEmail } from "../../send-email/route";
+import { sendChangePasswordEmail } from "@/components/emails/sendChangePasswordEmail";
 
 async function getAuthUser() {
   const cookieStore = await cookies();
@@ -29,7 +30,7 @@ export async function POST(req: Request) {
     
       const resetLink = await adminAuth.generatePasswordResetLink(user.email!);
     
-        await sendOnboardEmail({
+        await sendChangePasswordEmail({
             email: user.email,
             firstName: user.displayName ?? "there",
             resetLink,
