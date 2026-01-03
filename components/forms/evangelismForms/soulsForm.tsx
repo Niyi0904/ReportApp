@@ -46,6 +46,7 @@ export function SoulFormFields({ form, index }: Props) {
             <Input
               value={field.state.value || ""}
               onChange={(e) => field.handleChange(e.target.value)}
+              placeholder="Enter phone"
             />
           </div>
         )}
@@ -59,6 +60,7 @@ export function SoulFormFields({ form, index }: Props) {
             <Input
               value={field.state.value || ""}
               onChange={(e) => field.handleChange(e.target.value)}
+              placeholder="Enter address"
             />
           </div>
         )}
@@ -129,6 +131,7 @@ export function SoulFormFields({ form, index }: Props) {
             <Textarea
               value={field.state.value || ""}
               onChange={(e) => field.handleChange(e.target.value)}
+              placeholder="Notes for self"
               rows={3}
             />
           </div>
