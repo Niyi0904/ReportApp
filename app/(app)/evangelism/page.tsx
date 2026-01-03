@@ -57,7 +57,7 @@ export default function Evangelism() {
     (s) => s.status === "saved and filled"
   ).length;
 
-  const GOAL_SOULS = 1200;
+  const GOAL_SOULS = 300;
 
   // Calculate evangelism rate toward goal
   const evangelismRate = ((totalSouls / GOAL_SOULS) * 100).toFixed(1); // "0.3"

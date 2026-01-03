@@ -48,7 +48,7 @@ export default function Home() {
           <div className="grid grid-cols-1 gap-4 mb-8">
             <div className="bg-rose-50 rounded-xl p-4 shadow-sm">
               <p className="font-bold text-lg">Organize Prayer Groups</p>
-              <p className="text-sm text-gray-600">Keep track of your prayer teams and their activities effortlessly.</p>
+              <p className="text-sm text-gray-600">Keep track of your prayer your chain effortlessly.</p>
             </div>
             <div className="bg-rose-50 rounded-xl p-4 shadow-sm">
               <p className="font-bold text-lg">Track Evangelism</p>
