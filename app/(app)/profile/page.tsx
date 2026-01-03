@@ -6,16 +6,17 @@ import { ProfileSection } from "@/components/profile/ProfileSection";
 import { EditableField } from "@/components/profile/EditableField";
 import { ReadOnlyField } from "@/components/profile/ReadOnlyField";
 import { formatDate } from "@/lib/utils";
+import { LoadingState } from "@/components/LoadingState";
 
 export default function ProfilePage() {
   const { data: user, isLoading, error } = useUserProfile();
 
-  if (isLoading) return <p>Loading profile...</p>;
-  if (error) return <div>Error loading profile</div>;
+  if (isLoading) return  <LoadingState message="Loading profile..." />
+   if (error) return <div>Error loading profile</div>;
   if (!user) return <p>User not found</p>;
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-xl space-y-10">
+    <div className="max-w-4xl mx-auto p-4 md:p-8 bg-white rounded-xl space-y-10">
       <ProfileHeader user={user} />
 
       {/* PERSONAL INFO */}

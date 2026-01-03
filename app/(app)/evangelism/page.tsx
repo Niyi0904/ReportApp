@@ -1,183 +1,189 @@
-"use client"
+"use client";
 
-import { useState } from 'react';
-import { Plus } from 'lucide-react';
-import { PageHeader } from '@/components/PageHeader';
-import { DateFilter } from '@/components/DateFilter';
-import { ExportButton } from '@/components/ExportButton';
-import { SoulCard } from '@/components/evangelism/SoulCard';
-import { Button } from '@/components/ui/button';
-import { mockSouls } from '@/data/mockData';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { toast } from 'sonner';
+import { useState } from "react";
+import { Plus } from "lucide-react";
+import { PageHeader } from "@/components/PageHeader";
+import { DateFilter } from "@/components/DateFilter";
+import { ExportButton } from "@/components/ExportButton";
+import { SoulCard } from "@/components/evangelism/SoulCard";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { useEvangelism } from "@/features/evangelism/queries";
+import { toast } from "sonner";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/redux/store";
+import StatCard from "@/components/StatCard";
+import { EvangelismForm } from "@/components/forms/evangelismForms/evangelismForm";
+import { LoadingState } from "@/components/LoadingState";
 
-export default function Evangelism () {
-  const [souls, setSouls] = useState(mockSouls);
+export default function Evangelism() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const user = useSelector((state: RootState) => state.auth.user);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [newSoul, setNewSoul] = useState({
-    name: '',
-    phone: '',
-    address: '',
-    notes: '',
-    status: 'new' as const,
-  });
+  const [selectedMonthKey, setSelectedMonthKey] = useState<string>(
+    `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(
+      2,
+      "0"
+    )}`
+  );
 
-  const handleAddSoul = () => {
-    if (!newSoul.name) {
-      toast.error('Name is required');
-      return;
-    }
+  
+  const { data: evangelisms = [], isLoading, refetch } = useEvangelism(
+    user?.uid!,
+    selectedMonthKey
+  );
+  
+  // Combine all souls with evangelismDate
+  const allSouls = evangelisms.flatMap((e) =>
+    e.souls.map((soul) => ({
+      ...soul,
+      evangelizedAt: e.evangelismDate,
+    }))
+  );
+  
+  // Filtered souls
+  const filteredSouls = allSouls.filter((soul) =>
+    soul.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+  const totalSouls = allSouls.length;
+  const convertedSouls = allSouls.filter((s) => s.status === "saved and filled").length;
+  const followingUpSouls = allSouls.filter(
+    (s) => s.status === "saved and filled"
+  ).length;
 
-    const soul = {
-      ...newSoul,
-      id: String(souls.length + 1),
-      evangelizedBy: '1',
-      evangelizedAt: new Date(),
-      createdAt: new Date(),
-    };
+  const GOAL_SOULS = 1200;
 
-    setSouls([soul, ...souls]);
-    setNewSoul({ name: '', phone: '', address: '', notes: '', status: 'new' });
-    setIsDialogOpen(false);
-    toast.success('Soul added successfully!');
-  };
+  // Calculate evangelism rate toward goal
+  const evangelismRate = ((totalSouls / GOAL_SOULS) * 100).toFixed(1); // "0.3"
 
-  const exportData = souls.map((s) => ({
+  const exportData = allSouls.map((s) => ({
     name: s.name,
-    phone: s.phone || '',
-    address: s.address || '',
+    phone: s.phone || "",
+    address: s.address || "",
     status: s.status,
-    notes: s.notes || '',
-    date: s.evangelizedAt.toISOString().split('T')[0],
+    notes: s.notes || "",
+    date: s.evangelizedAt.toISOString().split("T")[0],
   }));
 
-  // Summary stats
-  const totalSouls = souls.length;
-  const convertedSouls = souls.filter(s => s.status === 'converted').length;
-  const followingUpSouls = souls.filter(s => s.status === 'following-up').length;
-
   return (
-      <div className="p-8 bg-white rounded-xl">
-        <PageHeader 
-          title="Evangelism" 
-          description="Track souls reached and their spiritual journey"
-          action={
-            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-              <DialogTrigger asChild>
-                <Button variant="outline" className="gap-2">
-                  <Plus size={18} />
-                  Add Soul
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle className="font-display">Add New Soul</DialogTitle>
-                </DialogHeader>
-                <div className="space-y-4 mt-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="name">Name *</Label>
-                    <Input
-                      id="name"
-                      value={newSoul.name}
-                      onChange={(e) => setNewSoul({ ...newSoul, name: e.target.value })}
-                      placeholder="Enter name"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="phone">Phone</Label>
-                    <Input
-                      id="phone"
-                      value={newSoul.phone}
-                      onChange={(e) => setNewSoul({ ...newSoul, phone: e.target.value })}
-                      placeholder="Enter phone number"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="address">Address</Label>
-                    <Input
-                      id="address"
-                      value={newSoul.address}
-                      onChange={(e) => setNewSoul({ ...newSoul, address: e.target.value })}
-                      placeholder="Enter address"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="status">Status</Label>
-                    <Select value={newSoul.status} onValueChange={(v: any) => setNewSoul({ ...newSoul, status: v })}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="new">New</SelectItem>
-                        <SelectItem value="following-up">Following Up</SelectItem>
-                        <SelectItem value="converted">Converted</SelectItem>
-                        <SelectItem value="inactive">Inactive</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="notes">Notes</Label>
-                    <Textarea
-                      id="notes"
-                      value={newSoul.notes}
-                      onChange={(e) => setNewSoul({ ...newSoul, notes: e.target.value })}
-                      placeholder="Enter any notes"
-                      rows={3}
-                    />
-                  </div>
-                  <Button variant="outline" className="w-full" onClick={handleAddSoul}>
-                    Add Soul
-                  </Button>
-                </div>
-              </DialogContent>
-            </Dialog>
-          }
+    <div className="min-h-screen rounded-xl bg-muted/40 p-4 md:p-8 space-y-8">
+      {/* Page Header */}
+      <PageHeader
+        title="Evangelism"
+        description="Track souls reached and their spiritual journey"
+      />
+
+      {/* Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6">
+        <StatCard
+          title="Total Souls"
+          value={totalSouls}
+          icon={<Plus size={20} />}
+          color="orange"
+        />
+        <StatCard
+          title="Converted"
+          value={convertedSouls}
+          icon={<Plus size={20} />}
+          color="emerald"
+        />
+        <StatCard
+          title="Evangelism Rate"
+          value={`${evangelismRate}%`}
+          icon={<Plus size={20} />}
+          color="blue"
+        >
+          <div className="h-2 w-full bg-muted/30 rounded-full mt-2">
+            <div
+              className="h-2 bg-blue-500 rounded-full transition-all duration-500"
+              style={{ width: `${evangelismRate}%` }}
+            ></div>
+          </div>
+        </StatCard>
+      </div>
+
+      {/* Filters & Actions */}
+      <div className="flex flex-wrap-reverse items-center justify-between gap-4">
+        <DateFilter
+          showMonthFilter={true}
+          onMonthChange={(newMonth) => setSelectedMonthKey(newMonth)}
         />
 
-        {/* Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <div className="p-4 rounded-xl bg-primary/10 border border-primary/20">
-            <p className="text-sm text-muted-foreground">Total Souls</p>
-            <p className="text-2xl font-display font-bold text-primary">{totalSouls}</p>
-          </div>
-          <div className="p-4 rounded-xl bg-success/10 border border-success/20">
-            <p className="text-sm text-muted-foreground">Converted</p>
-            <p className="text-2xl font-display font-bold text-success">{convertedSouls}</p>
-          </div>
-          <div className="p-4 rounded-xl bg-secondary/10 border border-secondary/20">
-            <p className="text-sm text-muted-foreground">Following Up</p>
-            <p className="text-2xl font-display font-bold text-secondary">{followingUpSouls}</p>
-          </div>
-        </div>
-
-        {/* Filters */}
-        <div className="flex flex-wrap items-center gap-4 mb-6">
-          <DateFilter />
-          <ExportButton 
+        <div className="flex gap-2 justify-between md:justify-center md:w-auto w-full">
+          <ExportButton
             data={exportData}
             filename="evangelism_report"
-            headers={['Name', 'Phone', 'Address', 'Status', 'Notes', 'Date']}
+            headers={["Name", "Phone", "Address", "Status", "Notes", "Date"]}
           />
-        </div>
 
-        {/* Soul Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {souls.map((soul, index) => (
-            <div key={soul.id} style={{ animationDelay: `${index * 0.05}s` }}>
-              <SoulCard 
-                soul={soul}
-                onFollowUp={(s) => toast.info(`Adding follow-up for ${s.name}`)}
-                onEdit={(s) => toast.info(`Editing ${s.name}`)}
-                onDelete={(s) => toast.info(`Deleting ${s.name}`)}
-              />
-            </div>
-          ))}
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <Button variant="default" className="bg-secondary-bg gap-2">
+                <Plus size={18} /> Add Soul
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-h-[90vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle>Add New Souls</DialogTitle>
+              </DialogHeader>
+              <EvangelismForm onSuccess={() => setIsDialogOpen(false)} />
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
-  );
-};
 
+      {/* Search Input */}
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Search by name..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full md:w-1/3 px-3 py-2 bg-background border border-muted rounded-md focus:outline-none focus:ring-2 focus:ring-secondary-bg"
+        />
+      </div>
+
+
+      {/* Souls Grid */}
+      <div>
+        {isLoading ? (
+          <LoadingState message="Fetching evangelism data..." />
+        ) : allSouls.length === 0 ? (
+          <p className="text-center text-muted-foreground">
+            No Evangelism recorded this month.
+          </p>
+        ) : (
+          <>
+            {
+              filteredSouls.length !== 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {filteredSouls.map((soul) => (
+                    <SoulCard
+                      key={soul.id}
+                      soul={soul}
+                      onFollowUp={() =>
+                        toast.info(`Adding follow-up for ${soul.name}`)
+                      }
+                      onEdit={() => toast.info(`Editing ${soul.name}`)}
+                      onDelete={() => toast.info(`Deleting ${soul.name}`)}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div>
+                  <p className="text-muted-foreground text-center">No data found</p>
+                </div>
+              )
+            }
+          </>
+        )}
+      </div>
+    </div>
+  );
+}

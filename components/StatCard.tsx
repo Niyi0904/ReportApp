@@ -3,11 +3,13 @@ export default function StatCard({
   value,
   icon,
   color,
+  children,
 }: {
   title: string;
   value: string | number;
   icon: React.ReactNode;
   color: "orange" | "blue" | "emerald" | "purple";
+  children?: React.ReactNode; // <-- add this
 }) {
   const colorMap = {
     orange: "bg-orange-100 text-orange-600",
@@ -17,17 +19,19 @@ export default function StatCard({
   };
 
   return (
-    <div className="rounded-xl bg-background border p-6 flex items-center gap-4">
-      <div
-        className={`h-10 w-10 rounded-lg flex items-center justify-center ${colorMap[color]}`}
-      >
-        {icon}
+    <div className="rounded-xl bg-background border p-6 flex flex-col gap-4">
+      <div className="flex items-center gap-4">
+        <div
+          className={`h-10 w-10 rounded-lg flex items-center justify-center ${colorMap[color]}`}
+        >
+          {icon}
+        </div>
+        <div>
+          <p className="text-sm text-muted-foreground">{title}</p>
+          <p className="text-xl font-bold">{value}</p>
+        </div>
       </div>
-
-      <div>
-        <p className="text-sm text-muted-foreground">{title}</p>
-        <p className="text-xl font-bold">{value}</p>
-      </div>
+      {children && <div>{children}</div>}
     </div>
   );
 }

@@ -61,7 +61,7 @@ export default function PrayerGroupsPage() {
   });
 
   return (
-    <div className="space-y-8 rounded-xl bg-background p-8">
+    <div className="space-y-8 rounded-xl bg-background p-4 md:p-8">
       <PageHeader
         title="Prayer Groups"
         description="Track your daily prayer group attendance"

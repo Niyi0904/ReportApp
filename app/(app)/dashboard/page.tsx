@@ -74,7 +74,7 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-muted/40 p-4">
+    <div className="min-h-screen rounded-xl bg-muted/40 p-4 md:p-8">
       <h1 className="text-2xl font-bold pb-2">Dashboard</h1>
       <div className="mx-auto max-w-7xl space-y-8">
 

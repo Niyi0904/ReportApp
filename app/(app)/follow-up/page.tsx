@@ -72,7 +72,7 @@ export default function FollowUps () {
   }));
 
   return (
-      <div className="p-8 bg-white rounded-xl">
+      <div className="p-4 md:p-8 bg-white rounded-xl">
         <PageHeader 
           title="Follow-ups" 
           description="Track your follow-up activities with souls"

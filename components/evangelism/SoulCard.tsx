@@ -1,15 +1,15 @@
-import { Soul } from '@/types';
-import { format } from 'date-fns';
-import { Phone, MapPin, Calendar, User, MoreVertical } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Badge } from '@/components/ui/badge';
+import { Soul } from "@/features/evangelism/types";
+import { format } from "date-fns";
+import { Phone, MapPin, Calendar, MoreVertical } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Button } from '@/components/ui/button';
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 
 interface SoulCardProps {
   soul: Soul;
@@ -18,36 +18,63 @@ interface SoulCardProps {
   onFollowUp?: (soul: Soul) => void;
 }
 
-const statusConfig = {
-  new: { label: 'New', className: 'bg-primary/10 text-primary border-primary/20' },
-  'following-up': { label: 'Following Up', className: 'bg-secondary/10 text-secondary border-secondary/20' },
-  converted: { label: 'Converted', className: 'bg-success/10 text-success border-success/20' },
-  inactive: { label: 'Inactive', className: 'bg-muted text-muted-foreground border-border' },
-};
 
-export const SoulCard = ({ soul, onEdit, onDelete, onFollowUp }: SoulCardProps) => {
-  const status = statusConfig[soul.status];
+type Status = "saved" | "saved and filled" | "filled";
 
+function StatusBadge({ status }: { status: Status }) {
+  switch (status) {
+    case "saved":
+      return <Badge variant="outline">Saved</Badge>;
+    case "saved and filled":
+      return <Badge variant="outline">Saved and Filled</Badge>;
+    case "filled":
+      return <Badge variant="outline">Filled</Badge>;
+    default:
+      return <Badge variant="outline">Unknown</Badge>;
+  }
+}
+
+export const SoulCard = ({
+  soul,
+  onEdit,
+  onDelete,
+  onFollowUp,
+}: SoulCardProps) => {
   return (
-    <div className="p-5 rounded-xl bg-card border border-border shadow-soft hover:shadow-medium transition-all duration-300 group animate-fade-in">
-      <div className="flex items-start justify-between mb-4">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-full gradient-primary flex items-center justify-center text-primary-foreground font-semibold text-lg">
+    <div className="p-5 rounded-xl bg-card border shadow-soft hover:shadow-medium transition group">
+      <div className="flex justify-between mb-4">
+        <div className="flex gap-3">
+          <div className="w-12 h-12 rounded-full bg-secondary-bg flex items-center justify-center text-white font-semibold">
             {soul.name.charAt(0)}
           </div>
-          <div>
-            <h3 className="font-semibold text-foreground text-lg">{soul.name}</h3>
-            <Badge variant="outline" className={cn('text-xs', status.className)}>
-              {status.label}
-            </Badge>
+
+          <div className="space-y-1">
+            <h3 className="font-semibold text-lg">{soul.name}</h3>
+
+            <div className="flex items-center gap-2 flex-wrap">
+              <Badge
+                variant="outline"
+                className={cn(
+                  "text-xs capitalize w-fit",
+                  soul.gender === "male"
+                    ? "border-blue-300 text-blue-600 bg-blue-50"
+                    : "border-pink-300 text-pink-600 bg-pink-50"
+                )}
+              >
+                {soul.gender}
+              </Badge>
+              <StatusBadge status={soul.status} />
+            </div>
           </div>
         </div>
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="opacity-0 group-hover:opacity-100 transition-opacity">
+            <Button variant="ghost" size="icon">
               <MoreVertical size={16} />
             </Button>
           </DropdownMenuTrigger>
+
           <DropdownMenuContent align="end">
             <DropdownMenuItem onClick={() => onFollowUp?.(soul)}>
               Add Follow-up
@@ -55,9 +82,9 @@ export const SoulCard = ({ soul, onEdit, onDelete, onFollowUp }: SoulCardProps) 
             <DropdownMenuItem onClick={() => onEdit?.(soul)}>
               Edit Details
             </DropdownMenuItem>
-            <DropdownMenuItem 
+            <DropdownMenuItem
               onClick={() => onDelete?.(soul)}
-              className="text-destructive focus:text-destructive"
+              className="text-destructive"
             >
               Delete
             </DropdownMenuItem>
@@ -65,27 +92,29 @@ export const SoulCard = ({ soul, onEdit, onDelete, onFollowUp }: SoulCardProps) 
         </DropdownMenu>
       </div>
 
-      <div className="space-y-2 text-sm">
+      <div className="space-y-2 text-sm text-muted-foreground">
         {soul.phone && (
-          <div className="flex items-center gap-2 text-muted-foreground">
+          <div className="flex gap-2 items-center">
             <Phone size={14} />
-            <span>{soul.phone}</span>
+            {soul.phone}
           </div>
         )}
+
         {soul.address && (
-          <div className="flex items-center gap-2 text-muted-foreground">
+          <div className="flex gap-2 items-center">
             <MapPin size={14} />
-            <span>{soul.address}</span>
+            {soul.address}
           </div>
         )}
-        <div className="flex items-center gap-2 text-muted-foreground">
+
+        <div className="flex gap-2 items-center">
           <Calendar size={14} />
-          <span>Reached on {format(soul.evangelizedAt, 'MMM d, yyyy')}</span>
+          Reached on {format(soul.createdAt, "MMM d, yyyy")}
         </div>
       </div>
 
       {soul.notes && (
-        <p className="mt-4 text-sm text-muted-foreground bg-muted/50 rounded-lg p-3">
+        <p className="mt-4 text-sm bg-muted/50 rounded-lg p-3">
           {soul.notes}
         </p>
       )}
