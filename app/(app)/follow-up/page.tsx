@@ -7,7 +7,6 @@ import { DateFilter } from '@/components/DateFilter';
 import { ExportButton } from '@/components/ExportButton';
 import { FollowUpCard } from '@/components/followUp/FollowUpCard';
 import { Button } from '@/components/ui/button';
-import { mockFollowUps, mockSouls } from '@/data/mockData';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
