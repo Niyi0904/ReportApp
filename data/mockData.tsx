@@ -29,16 +29,6 @@ export const mockPrayerGroups: PrayerGroup[] = [
   { id: '9', date: new Date('2024-12-24'), userId: '2', status: 'absent' },
   { id: '10', date: new Date('2024-12-25'), userId: '2', status: 'excused', notes: 'Christmas' },
 ];
-
-export const mockFollowUps: FollowUp[] = [
-  { id: '1', soulId: '1', soulName: 'Robert Green', userId: '1', date: new Date('2024-12-05'), type: 'call', notes: 'Had a great conversation about faith', outcome: 'positive' },
-  { id: '2', soulId: '1', soulName: 'Robert Green', userId: '1', date: new Date('2024-12-12'), type: 'visit', notes: 'Visited home, met family', outcome: 'positive' },
-  { id: '3', soulId: '3', soulName: 'James Miller', userId: '2', date: new Date('2024-11-25'), type: 'meeting', notes: 'Bible study session', outcome: 'positive' },
-  { id: '4', soulId: '4', soulName: 'Maria Garcia', userId: '1', date: new Date('2024-12-18'), type: 'message', notes: 'Sent encouraging message', outcome: 'neutral' },
-  { id: '5', soulId: '2', soulName: 'Emily White', userId: '1', date: new Date('2024-12-20'), type: 'call', notes: 'Scheduled meeting for next week', outcome: 'positive' },
-  { id: '6', soulId: '5', soulName: 'William Taylor', userId: '3', date: new Date('2024-12-22'), type: 'visit', notes: 'First visit, needs more attention', outcome: 'needs-attention' },
-];
-
 export const mockDashboardStats: DashboardStats = {
   totalSoulsReached: 156,
   prayerGroupAttendance: 87,
