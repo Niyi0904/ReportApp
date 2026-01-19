@@ -19,6 +19,7 @@ import {
 } from "recharts";
 import StatCard from "@/components/StatCard";
 import { useState } from "react";
+import { useGetAllEvangelismsByUser } from "@/features/evangelism/queries";
 
 // ----------------------------------
 // MOCK DATA (replace with real API)
@@ -65,6 +66,10 @@ const recentSouls = [
 export default function DashboardPage() {
   const [currentTime, setCurrentTime] = useState(new Date());
   const user = useSelector((state: RootState) => state.auth.user);
+
+  const { data: evangelisms = [], isLoading, refetch } = useGetAllEvangelismsByUser(user?.uid!);
+
+  console.log(evangelisms);
 
   const greeting = () => {
     const hour = currentTime.getHours();

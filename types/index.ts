@@ -29,13 +29,16 @@ export interface PrayerGroup {
 
 export interface FollowUp {
   id: string;
-  soulId: string;
-  soulName: string;
-  userId: string;
-  date: Date;
-  type: 'call' | 'visit' | 'message' | 'meeting';
-  notes: string;
-  outcome: 'positive' | 'neutral' | 'needs-attention';
+  monthKey: string;
+  userId: string
+  followUpDate: Date,
+  discipleName: string;
+  topic: string;
+  duration: string;
+  gender: "male" | "female";
+  status: "receptive" | "non-receptive"
+  notes?: string;
+  createdAt: Date
 }
 
 export interface DashboardStats {

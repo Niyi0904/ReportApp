@@ -31,6 +31,59 @@ export async function addEvangelism(data: EvangelismFormValues) {
   return res.json();
 }
 
+export async function getAllEvangelismsByUser(
+  userId: string,
+): Promise<Evangelism[]> {
+  try {
+    // 1️⃣ Fetch ALL souls for this user + month
+    const soulsQuery = query(
+      collection(db, "souls"),
+      where("userId", "==", userId),
+      orderBy("evangelismDate", "desc")
+    );
+
+    const soulsSnap = await getDocs(soulsQuery);
+
+    // 2️⃣ Group souls by evangelismId
+    const evangelismMap = new Map<string, Evangelism>();
+
+    soulsSnap.docs.forEach((doc) => {
+      const data = doc.data();
+
+      const evangelismId = data.evangelismId;
+      const evangelismDate = data.evangelismDate.toDate();
+
+      const soul: Soul = {
+        id: doc.id,
+        name: data.name,
+        phone: data.phone ?? null,
+        address: data.address ?? null,
+        gender: data.gender,
+        status: data.status,
+        notes: data.notes ?? null,
+        createdAt: data.createdAt.toDate(),
+      };
+
+      if (!evangelismMap.has(evangelismId)) {
+        evangelismMap.set(evangelismId, {
+          id: evangelismId,
+          evangelismDate,
+          monthKey: data.monthKey,
+          souls: [soul],
+        });
+      } else {
+        evangelismMap.get(evangelismId)!.souls.push(soul);
+      }
+    });
+
+    // 3️⃣ Convert map → array
+    return Array.from(evangelismMap.values());
+  } catch (error) {
+    console.error("Error fetching evangelism data:", error);
+    throw error;
+  }
+}
+
 
 export async function getEvangelismByMonth(
   userId: string,

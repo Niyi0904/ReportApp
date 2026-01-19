@@ -14,52 +14,64 @@ type Props = {
   index: number;
 };
 
-export function SoulFormFields({ form, index }: Props) {
+export function DiscipleFormFields({ form, index }: Props) {
   return (
     <div className="space-y-4 border rounded-lg p-4">
       {/* Name */}
       <form.Field
-        name={`souls[${index}].name`}
+        name={`disciples[${index}].discipleName`}
         validators={{
           onChange: ({ value }: {value: any}) =>
-            !value ? "Name is required" : undefined,
+            !value ? "Disciple name is required" : undefined,
         }}
       >
         {(field: any) => (
           <div className="space-y-2">
-            <Label>Name *</Label>
+            <Label>Disciple Name *</Label>
             <Input
               value={field.state.value}
               onChange={(e) => field.handleChange(e.target.value)}
-              placeholder="Enter name"
-            />
-          </div>
-        )}
-      </form.Field>
-
-      {/* Phone */}
-      <form.Field name={`souls[${index}].phone`}>
-        {(field: any) => (
-          <div className="space-y-2">
-            <Label>Phone</Label>
-            <Input
-              value={field.state.value || ""}
-              onChange={(e) => field.handleChange(e.target.value)}
-              placeholder="Enter phone"
+              placeholder="Select or Enter a disciple name"
             />
           </div>
         )}
       </form.Field>
 
       {/* Address */}
-      <form.Field name={`souls[${index}].address`}>
+      <form.Field 
+        name={`disciples[${index}].topic`}
+        validators={{
+          onChange: ({ value }: {value: any}) =>
+            !value ? "Topic is required" : undefined,
+        }}
+      >
         {(field: any) => (
           <div className="space-y-2">
-            <Label>Address</Label>
+            <Label>Topic Taught *</Label>
             <Input
               value={field.state.value || ""}
               onChange={(e) => field.handleChange(e.target.value)}
-              placeholder="Enter address"
+              placeholder="Enter topic taught"
+            />
+          </div>
+        )}
+      </form.Field>
+
+        {/* Duration */}
+      <form.Field
+        name={`disciples[${index}].duration`}
+        validators={{
+          onChange: ({ value }: {value: any}) =>
+            !value ? "Duration is required" : undefined,
+        }}
+      >
+        {(field: any) => (
+          <div className="space-y-2">
+            <Label>Duration *</Label>
+            <Input
+              value={field.state.value || ""}
+              onChange={(e) => field.handleChange(e.target.value)}
+              placeholder="Enter duration"
             />
           </div>
         )}
@@ -67,7 +79,7 @@ export function SoulFormFields({ form, index }: Props) {
 
       {/* Gender */}
       <form.Field
-        name={`souls[${index}].gender`}
+        name={`disciples[${index}].gender`}
         validators={{
           onChange: ({ value }: {value: any}) =>
             !value ? "Gender is required" : undefined,
@@ -94,7 +106,7 @@ export function SoulFormFields({ form, index }: Props) {
 
       {/* Status */}
       <form.Field
-        name={`souls[${index}].status`}
+        name={`disciples[${index}].status`}
         validators={{
           onChange: ({ value }: {value: any}) =>
             !value ? "Status is required" : undefined,
@@ -111,11 +123,10 @@ export function SoulFormFields({ form, index }: Props) {
                 <SelectValue placeholder="Select status" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="saved">Saved</SelectItem>
-                <SelectItem value="saved and filled">
-                  Saved & Filled
+                <SelectItem value="receptive">Receptive</SelectItem>
+                <SelectItem value="none-receptive">
+                  Non-receptive
                 </SelectItem>
-                <SelectItem value="filled">Filled</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -123,7 +134,7 @@ export function SoulFormFields({ form, index }: Props) {
       </form.Field>
 
       {/* Notes */}
-      <form.Field name={`souls[${index}].notes`}>
+      <form.Field name={`disciples[${index}].notes`}>
         {(field: any) => (
           <div className="space-y-2">
             <Label>Notes</Label>
