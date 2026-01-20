@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { adminAuth } from "@/lib/firebase/admin";
 
-const PROTECTED_ROUTES = ["/dashboard", "/prayer-chain", "/evangelism", "/members", "/settings", "/profile"];
+const PROTECTED_ROUTES = ["/dashboard", "/prayer-chain", "/evangelism", "/follow-up", "/members", "/settings", "/profile"];
 
 export const runtime = 'nodejs';
 
@@ -37,5 +37,5 @@ function redirectToLogin(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/prayer-chain/:path*", "/evangelism/:path*", "/members/:path*", "/settings/:path*", "/profile/:path*"],
+  matcher: ["/dashboard/:path*", "/prayer-chain/:path*", "/evangelism/:path*", "/follow-up/:path*", "/members/:path*", "/settings/:path*", "/profile/:path*"],
 };

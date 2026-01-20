@@ -1,4 +1,4 @@
-import { User, Soul, PrayerGroup, FollowUp, DashboardStats, MonthlyData } from '@/types';
+import { User, Soul, PrayerGroup, DashboardStats, MonthlyData } from '@/types';
 
 export const mockUsers: User[] = [
   { id: '1', name: 'John Doe', email: 'john@example.com', role: 'admin', createdAt: new Date('2024-01-15') },

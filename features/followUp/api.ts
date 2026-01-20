@@ -75,7 +75,6 @@ export async function getAllFollowUpsByUser(
   }
 }
 
-
 export async function getFollowUpByMonth(
   userId: string,
   monthKey: string
@@ -122,7 +121,6 @@ export async function getFollowUpByMonth(
   }
 }
 
-
 export async function updateFollowUp({
   followUpId,
   data
@@ -135,5 +133,20 @@ export async function updateFollowUp({
   });
 }
 
+export async function deleteFollowUp(followUpId: string) {
+  const res = await fetch("/api/follow-up", {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ followUpId }),
+  });
 
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(text || "Failed to delete follow-up");
+  }
+
+  return res.json();
+}
 

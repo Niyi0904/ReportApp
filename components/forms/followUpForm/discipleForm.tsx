@@ -1,13 +1,8 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { BookOpen, Clock, User } from "lucide-react";
 
 type Props = {
   form: any;
@@ -16,119 +11,109 @@ type Props = {
 
 export function DiscipleFormFields({ form, index }: Props) {
   return (
-    <div className="space-y-4 border rounded-lg p-4">
-      {/* Name */}
-      <form.Field
-        name={`disciples[${index}].discipleName`}
-        validators={{
-          onChange: ({ value }: {value: any}) =>
-            !value ? "Disciple name is required" : undefined,
-        }}
-      >
+    <div className="space-y-5 border border-border/60 bg-card/50 rounded-2xl p-6 shadow-sm">
+      <div className="flex items-center gap-2 mb-2">
+        <div className="h-6 w-1 bg-[#634832] rounded-full" />
+        <span className="text-xs font-bold uppercase tracking-tighter text-foreground/70">
+          Disciple Entry #{index + 1}
+        </span>
+      </div>
+
+      {/* Disciple Name */}
+      <form.Field name={`disciples[${index}].discipleName`}>
         {(field: any) => (
           <div className="space-y-2">
-            <Label>Disciple Name *</Label>
-            <Input
-              value={field.state.value}
-              onChange={(e) => field.handleChange(e.target.value)}
-              placeholder="Select or Enter a disciple name"
-            />
+            <Label className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground ml-1">
+              Disciple Name *
+            </Label>
+            <div className="relative">
+              <User className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/50" size={18} />
+              <Input
+                className="pl-10 h-11 bg-muted/20 border-none focus-visible:ring-1"
+                value={field.state.value}
+                onChange={(e) => field.handleChange(e.target.value)}
+                placeholder="Search or enter name"
+              />
+            </div>
           </div>
         )}
       </form.Field>
 
-      {/* Address */}
-      <form.Field 
-        name={`disciples[${index}].topic`}
-        validators={{
-          onChange: ({ value }: {value: any}) =>
-            !value ? "Topic is required" : undefined,
-        }}
-      >
+      {/* Topic Taught */}
+      <form.Field name={`disciples[${index}].topic`}>
         {(field: any) => (
           <div className="space-y-2">
-            <Label>Topic Taught *</Label>
-            <Input
-              value={field.state.value || ""}
-              onChange={(e) => field.handleChange(e.target.value)}
-              placeholder="Enter topic taught"
-            />
+            <Label className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground ml-1">
+              Topic Taught *
+            </Label>
+            <div className="relative">
+              <BookOpen className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/50" size={18} />
+              <Input
+                className="pl-10 h-11 bg-muted/20 border-none focus-visible:ring-1"
+                value={field.state.value || ""}
+                onChange={(e) => field.handleChange(e.target.value)}
+                placeholder="e.g. Salvation, Prayer..."
+              />
+            </div>
           </div>
         )}
       </form.Field>
 
-        {/* Duration */}
-      <form.Field
-        name={`disciples[${index}].duration`}
-        validators={{
-          onChange: ({ value }: {value: any}) =>
-            !value ? "Duration is required" : undefined,
-        }}
-      >
-        {(field: any) => (
-          <div className="space-y-2">
-            <Label>Duration *</Label>
-            <Input
-              value={field.state.value || ""}
-              onChange={(e) => field.handleChange(e.target.value)}
-              placeholder="Enter duration"
-            />
-          </div>
-        )}
-      </form.Field>
+      {/* Grid for Small Fields */}
+      <div className="grid grid-cols-2 gap-4">
+        {/* Gender */}
+        <form.Field name={`disciples[${index}].gender`}>
+          {(field: any) => (
+            <div className="space-y-2">
+              <Label className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground ml-1">Gender</Label>
+              <Select value={field.state.value} onValueChange={field.handleChange}>
+                <SelectTrigger className="h-11 bg-muted/20 border-none">
+                  <SelectValue placeholder="Select" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="male">Male</SelectItem>
+                  <SelectItem value="female">Female</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+        </form.Field>
 
-      {/* Gender */}
-      <form.Field
-        name={`disciples[${index}].gender`}
-        validators={{
-          onChange: ({ value }: {value: any}) =>
-            !value ? "Gender is required" : undefined,
-        }}
-      >
-        {(field: any) => (
-          <div className="space-y-2">
-            <Label>Gender *</Label>
-            <Select
-              value={field.state.value}
-              onValueChange={field.handleChange}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select gender" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="male">Male</SelectItem>
-                <SelectItem value="female">Female</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        )}
-      </form.Field>
+        {/* Status */}
+        <form.Field name={`disciples[${index}].status`}>
+          {(field: any) => (
+            <div className="space-y-2">
+              <Label className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground ml-1">Outcome</Label>
+              <Select value={field.state.value} onValueChange={field.handleChange}>
+                <SelectTrigger className="h-11 bg-muted/20 border-none">
+                  <SelectValue placeholder="Select" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="receptive">Receptive</SelectItem>
+                  <SelectItem value="non-receptive">Non-receptive</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+        </form.Field>
+      </div>
 
-      {/* Status */}
-      <form.Field
-        name={`disciples[${index}].status`}
-        validators={{
-          onChange: ({ value }: {value: any}) =>
-            !value ? "Status is required" : undefined,
-        }}
-      >
+      {/* Duration */}
+      <form.Field name={`disciples[${index}].duration`}>
         {(field: any) => (
           <div className="space-y-2">
-            <Label>Status *</Label>
-            <Select
-              value={field.state.value}
-              onValueChange={field.handleChange}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="receptive">Receptive</SelectItem>
-                <SelectItem value="none-receptive">
-                  Non-receptive
-                </SelectItem>
-              </SelectContent>
-            </Select>
+            <Label className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground ml-1">
+              Duration (mins)
+            </Label>
+            <div className="relative">
+              <Clock className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/50" size={18} />
+              <Input
+                className="pl-10 h-11 bg-muted/20 border-none focus-visible:ring-1"
+                value={field.state.value || ""}
+                onChange={(e) => field.handleChange(e.target.value)}
+                placeholder="e.g. 30"
+              />
+            </div>
           </div>
         )}
       </form.Field>
@@ -137,12 +122,12 @@ export function DiscipleFormFields({ form, index }: Props) {
       <form.Field name={`disciples[${index}].notes`}>
         {(field: any) => (
           <div className="space-y-2">
-            <Label>Notes</Label>
+            <Label className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground ml-1">Notes</Label>
             <Textarea
+              className="bg-muted/20 border-none focus-visible:ring-1 min-h-25 resize-none"
               value={field.state.value || ""}
               onChange={(e) => field.handleChange(e.target.value)}
-              placeholder="Notes for self"
-              rows={3}
+              placeholder="Any specific observations..."
             />
           </div>
         )}

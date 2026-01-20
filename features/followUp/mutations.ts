@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { addFollowUp, updateFollowUp } from "./api";
+import { addFollowUp, deleteFollowUp, updateFollowUp } from "./api";
+import { FollowUp } from "./types";
 
 export function useAddFollowUp(userId: string) {
   const client = useQueryClient()
@@ -24,6 +25,12 @@ export function useUpdateSoul(userId: string) {
         exact: false
       });
     },
+  });
+}
+
+export function useDeleteFollowUp() {
+  return useMutation({
+    mutationFn: deleteFollowUp,
   });
 }
 

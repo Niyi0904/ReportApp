@@ -8,6 +8,7 @@
   --color-foreground: var(--foreground);
   --color-primary-bg: var(--primary-bg);
   --color-secondary-bg: var(--secondary-bg);
+  --color-secondary-bg-hover: var(--secondary-bg-hover);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -82,7 +83,9 @@
   --sidebar-border: oklch(0.928 0.006 264.531);
   --sidebar-ring: oklch(0.707 0.022 261.325);
   --primary-bg: #F3E8E1;
-  --secondary-bg: #7A4A2E;
+  --secondary-bg: #634832; 
+  --secondary-bg-hover: #4d3827; 
+
 }
 
 .dark {

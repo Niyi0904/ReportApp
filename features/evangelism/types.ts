@@ -17,6 +17,7 @@ export interface Soul {
   name: string;
   phone?: string;
   address?: string;
+  evangelizedAt?: Date;
   gender: "male" | "female";
   status: "saved" | "saved and filled" | "filled";
   notes?: string;

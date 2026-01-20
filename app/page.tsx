@@ -1,72 +1,116 @@
 "use client";
 
-import { Cross } from "lucide-react";
+import { Cross, Users, Zap, Calendar, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col lg:flex-row">
-      {/* Left side - Branding / Stats */}
-      <div className="hidden lg:flex lg:w-1/2 gradient-warm relative overflow-hidden">
-        <div className="absolute inset-0 bg-secondary-bg" />
-        <div className="relative z-10 flex flex-col justify-center p-12 text-primary-foreground">
-          <div className="w-16 h-16 rounded-2xl bg-primary-foreground/10 backdrop-blur flex items-center justify-center mb-8">
-            <Cross size={32} />
+    <div className="min-h-screen flex flex-col lg:flex-row bg-[#FDFCFB]">
+      {/* Left side - Dynamic Brand Section */}
+      <div className="relative hidden lg:flex lg:w-1/2 bg-[#634832] overflow-hidden">
+        {/* Abstract Background Elements */}
+        <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full bg-white/5 blur-3xl" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-stone-900/20 blur-3xl" />
+        
+        <div className="relative z-10 flex flex-col justify-center p-16 text-white">
+          <div className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center mb-10 shadow-2xl">
+            <Cross size={32} className="text-stone-100" />
           </div>
-          <h1 className="text-5xl font-display font-bold mb-4">
-            Disciple Management
+          
+          <h1 className="text-6xl font-extrabold tracking-tight mb-6 leading-[1.1]">
+            Ministry <br /> 
+            <span className="text-stone-300">Management</span>
           </h1>
-          <p className="text-xl opacity-90 max-w-md">
-            Track evangelism, manage prayer groups, and follow up with souls on their spiritual journey.
+          
+          <p className="text-xl text-stone-200/90 max-w-md leading-relaxed mb-12">
+            A professional ecosystem to track evangelism, manage discipleship, and monitor the spiritual growth of your community.
           </p>
 
-          <div className="mt-12 grid grid-cols-3 gap-6">
-            <div className="bg-primary-foreground/10 backdrop-blur rounded-xl p-4">
-              <p className="text-3xl font-bold">156</p>
-              <p className="text-sm opacity-80">Souls Reached</p>
+          {/* Stats Grid with Glassmorphism */}
+          <div className="grid grid-cols-3 gap-4">
+            <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-5 transition-transform hover:scale-105">
+              <p className="text-3xl font-bold">1.2k</p>
+              <p className="text-[10px] uppercase tracking-widest font-bold opacity-60 mt-1">Souls Won</p>
             </div>
-            <div className="bg-primary-foreground/10 backdrop-blur rounded-xl p-4">
-              <p className="text-3xl font-bold">87%</p>
-              <p className="text-sm opacity-80">Attendance</p>
+            <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-5 transition-transform hover:scale-105">
+              <p className="text-3xl font-bold">94%</p>
+              <p className="text-[10px] uppercase tracking-widest font-bold opacity-60 mt-1">Retention</p>
             </div>
-            <div className="bg-primary-foreground/10 backdrop-blur rounded-xl p-4">
-              <p className="text-3xl font-bold">342</p>
-              <p className="text-sm opacity-80">Follow-ups</p>
+            <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-5 transition-transform hover:scale-105">
+              <p className="text-3xl font-bold">48</p>
+              <p className="text-[10px] uppercase tracking-widest font-bold opacity-60 mt-1">Growth</p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Right side - Call-to-action / Info */}
-      <div className="lg:w-1/2 flex items-center justify-center bg-primary-bg p-12">
-        <div className="max-w-md text-center lg:text-left">
-          <h2 className="text-3xl font-bold mb-4 text-gray-900">
-            Keep Track of Your Ministry
-          </h2>
-
-          {/* Info Cards */}
-          <div className="grid grid-cols-1 gap-4 mb-8">
-            <div className="bg-rose-50 rounded-xl p-4 shadow-sm">
-              <p className="font-bold text-lg">Organize Prayer Groups</p>
-              <p className="text-sm text-gray-600">Keep track of your prayer your chain effortlessly.</p>
-            </div>
-            <div className="bg-rose-50 rounded-xl p-4 shadow-sm">
-              <p className="font-bold text-lg">Track Evangelism</p>
-              <p className="text-sm text-gray-600">Monitor souls reached and follow-ups directly from your dashboard.</p>
-            </div>
-            <div className="bg-rose-50 rounded-xl p-4 shadow-sm">
-              <p className="font-bold text-lg">Simple Follow-ups</p>
-              <p className="text-sm text-gray-600">Never miss checking in on new disciples and ongoing programs.</p>
-            </div>
+      {/* Right side - CTA & Features */}
+      <div className="lg:w-1/2 flex items-center justify-center p-8 md:p-16">
+        <div className="max-w-md w-full">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-stone-100 border border-stone-200 mb-6">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-stone-600">Now Active for Ministry Teams</span>
           </div>
 
-          {/* Get Started / Login Button */}
-          <Link
-            href="/login"
-            className="inline-block bg-secondary-bg hover:bg-secondary-bg/90 text-white font-bold py-3 px-6 rounded-lg transition-colors"
-          >
-            Get Started
-          </Link>
+          <h2 className="text-4xl font-extrabold text-stone-900 mb-6 tracking-tight">
+            Built for the Great Commission.
+          </h2>
+
+          <p className="text-stone-500 mb-10 leading-relaxed">
+            Standardize your follow-up process and ensure no soul is left behind. Experience data-driven ministry management.
+          </p>
+
+          {/* Feature List - Professional Style */}
+          <div className="space-y-4 mb-10">
+            {[
+              { 
+                title: "Evangelism Tracking", 
+                desc: "Real-time logging of field activities and souls reached.", 
+                icon: <Zap size={18} className="text-amber-600" />,
+                bg: "bg-amber-50"
+              },
+              { 
+                title: "Prayer Chain Logic", 
+                desc: "Organize prayer groups with automated scheduling.", 
+                icon: <Calendar size={18} className="text-blue-600" />,
+                bg: "bg-blue-50"
+              },
+              { 
+                title: "Disciple Retention", 
+                desc: "Advanced follow-up metrics and status reporting.", 
+                icon: <Users size={18} className="text-emerald-600" />,
+                bg: "bg-emerald-50"
+              }
+            ].map((feature, i) => (
+              <div key={i} className="flex gap-4 p-4 rounded-2xl border border-stone-100 bg-white hover:border-stone-200 transition-all shadow-sm group">
+                <div className={`h-10 w-10 shrink-0 rounded-xl ${feature.bg} flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                  {feature.icon}
+                </div>
+                <div>
+                  <h4 className="font-bold text-stone-800 text-sm">{feature.title}</h4>
+                  <p className="text-xs text-stone-500 mt-0.5 leading-relaxed">{feature.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Link
+              href="/login"
+              className="flex-1 inline-flex items-center justify-center bg-[#634832] hover:bg-[#4d3827] text-white font-bold py-4 px-8 rounded-2xl transition-all shadow-lg shadow-stone-200 active:scale-95 group"
+            >
+              Get Started <ArrowRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />
+            </Link>
+            <Link
+              href="/about"
+              className="flex-1 inline-flex items-center justify-center bg-white border border-stone-200 text-stone-700 font-bold py-4 px-8 rounded-2xl hover:bg-stone-50 transition-all active:scale-95"
+            >
+              Learn More
+            </Link>
+          </div>
         </div>
       </div>
     </div>
