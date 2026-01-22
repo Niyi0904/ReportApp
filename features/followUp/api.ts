@@ -65,8 +65,6 @@ export async function getAllFollowUpsByUser(
       });
 
     });
-
-    console.log(followUpsSnap);
     // 3️⃣ Convert map → array
     return followUpArray;
   } catch (error) {

@@ -27,11 +27,16 @@ import { useGetAllEvangelismsByUser } from "@/features/evangelism/queries";
 import { useGetAllFollowUpByUser } from "@/features/followUp/queries"; // Assuming this exists
 import { LoadingState } from "@/components/LoadingState";
 import Link from "next/link";
+import { useGetMyParticipation } from "@/features/prayerChain/queries";
+import { isSameDay } from "date-fns";
+import { CloudSun, Moon } from "lucide-react";
 
 export default function DashboardPage() {
   const user = useSelector((state: RootState) => state.auth.user);
 
   // Queries
+  const { data: myParticipations = [], isLoading: isPrayerLoading } = 
+    useGetMyParticipation(user?.uid!);
   const { data: evangelisms = [], isLoading: isEvangelismLoading } = 
     useGetAllEvangelismsByUser(user?.uid!);
   const { data: followUps = [], isLoading: isFollowUpLoading } = 
@@ -39,7 +44,13 @@ export default function DashboardPage() {
 
   // --- DYNAMIC DATA CALCULATIONS ---
   const dashboardStats = useMemo(() => {
-    // 1. Total Souls Reached (Sum of souls array in each evangelism session)
+    const today = new Date();
+    const prayerRecordToday = myParticipations.find(p => {
+      const pDate = p.date?.toDate ? p.date.toDate() : new Date(p.date);
+      return isSameDay(pDate, today);
+    });
+
+    const hasPrayedToday = !!prayerRecordToday;
     const totalSouls = evangelisms.reduce((acc, curr) => acc + (curr.souls?.length || 0), 0);
     
     // 2. Total Follow-up Sessions
@@ -64,8 +75,8 @@ export default function DashboardPage() {
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
       .slice(0, 5);
 
-    return { totalSouls, totalFollowUps, conversionRate, chartData, recentActivity, savedAndFilled };
-  }, [evangelisms, followUps]);
+    return { totalSouls, totalFollowUps, conversionRate, chartData, recentActivity, savedAndFilled, hasPrayedToday, prayerTime: prayerRecordToday ? `${prayerRecordToday.from} - ${prayerRecordToday.to}` : null };
+  }, [evangelisms, followUps, myParticipations]);
 
   const greeting = () => {
     const hour = new Date().getHours();
@@ -74,7 +85,7 @@ export default function DashboardPage() {
     return 'Good evening';
   };
 
-  if (isEvangelismLoading || isFollowUpLoading) return <LoadingState />;
+  if (isEvangelismLoading || isFollowUpLoading || isPrayerLoading) return <LoadingState />;
 
   return (
     <div className="min-h-screen bg-[#FDFCFB] rounded-3xl p-4 md:p-8 space-y-8">
@@ -102,7 +113,17 @@ export default function DashboardPage() {
       </div>
 
       {/* Main Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+        <StatCard
+          title="Daily Prayer"
+          value={dashboardStats.hasPrayedToday ? "Prayed" : "No Record"}
+          icon={dashboardStats.hasPrayedToday ? <CloudSun size={20} /> : <Moon size={20} />}
+          color={dashboardStats.hasPrayedToday ? "emerald" : "amber"}
+          trend={dashboardStats.hasPrayedToday 
+            ? `Logged: ${dashboardStats.prayerTime}` 
+            : "You have not prayed today"
+          }
+        />
         <StatCard
           title="Souls Reached"
           value={dashboardStats.totalSouls}
